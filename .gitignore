@@ -1,1 +1,12 @@
+
 /venv
+/.idea/.gitignore
+/.idea/flaskProject.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
+/.idea/jsLibraryMappings.xml
+.idea/.name
+.idea/WebViewer.iml
+__pycache__/app.cpython-311.pyc
