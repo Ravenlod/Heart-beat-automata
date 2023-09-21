@@ -10,9 +10,16 @@ Main page
         </div>
 
         <div class="card-body">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{{ url_for('cell_automata') }}">
+                    <button type="button" class="btn btn-primary">Cell Automata</button>
+                </a>
+                <a href="{{ url_for('heart_automata') }}">
+                    <button type="button" class="btn btn-primary">Heart Automata</button>
+                </a>
+                <a href="{{ url_for('test_page') }}">
+                    <button type="button" class="btn btn-primary">Test Page</button>
+                </a>
             </div>
         </div>
         <div class="card-footer">
