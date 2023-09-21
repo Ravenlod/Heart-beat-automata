@@ -1,10 +1,196 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+Heart Automata
+{% endblock %}
 
-</body>
-</html>
+{% block content %}
+
+<div class="container-custom interface-group">
+      
+  <p class="lead">
+    CELL
+  </p>
+  <hr>
+  <div class="container">
+    <button type="submit" class="btn btn-outline-dark submit_btn">></button>
+    <button type="button" class="btn btn-outline-dark link_submit_btn">Submit links</button>
+  </div>
+  
+  {% for node in nodes %}
+
+  <div class="node justify-content-center" style="{{ node[1] | safe }}">
+
+    <div class="node_header">
+      Drag here
+    </div>
+
+    <div class="node_card position-relative">
+
+            <input class="value" type="text" name="{{ loop.index | safe }}" value="{{ node[0] | safe }}">
+      
+      <div>
+        {{ loop.index | safe }}
+      </div>
+
+    </div>
+
+    
+
+  </div>
+      
+
+
+  {% endfor %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  let node_set = document.querySelectorAll('.node');
+  let node1 = null
+  let links = []
+
+  node_set.forEach((node, index) => {
+    
+    dragElement(node)
+    let node_click = node.querySelector('.node_card')
+    node_click.addEventListener('click', () => {
+      if (node1) {
+        temp_value1 = node1.querySelector('.value')
+        temp_value2 = node_click.querySelector('.value')
+
+        console.log([temp_value1.getAttribute('name'), temp_value2.getAttribute('name')])
+        links.push([temp_value1.getAttribute('name'), temp_value2.getAttribute('name')])
+
+
+
+        let parentDiv = node_click.closest(".interface-group");
+        let svg = document.createElement("svg")
+        parentDiv.append(svg);
+        svg.setAttribute('id', 'line' + index)
+        svg.setAttribute('style', 'position: absolute; stroke: black; stroke-width: 2px;')
+        const line = document.getElementById('line' + index);
+      
+        const rect1 = node1.getBoundingClientRect();
+        const rect2 = node_click.getBoundingClientRect();
+      
+        const x1 = rect1.left + rect1.width / 2;
+        const y1 = rect1.top + rect1.height / 2;
+        const x2 = rect2.left + rect2.width / 2;
+        const y2 = rect2.top + rect2.height / 2;
+      
+        line.setAttribute('width', window.innerWidth);
+        line.setAttribute('height', window.innerHeight);
+      
+        line.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+        node1 = null
+      }
+      else {
+        node1 = node_click
+      }
+      
+    })
+})
+
+
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; 
+  
+  elmnt_header = elmnt.querySelector('.node_header') 
+  if(elmnt_header){
+    elmnt_header.onmousedown = dragMouseDown;
+  }
+  else {
+    elmnt.onmousedown = dragMouseDown;
+  }
+  
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // получаем позицию курсора мыши вначале:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // вызываем функцию каждый раз, когда курсор движется:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // вычисляем новую позицию курсора:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // задаем новую позицию элемента:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // прекращаем двигать, когда кнопка мыши отпущена:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+let link_submit_btn = document.querySelector('.link_submit_btn')
+link_submit_btn.addEventListener('click', () => {
+
+  fetch('/linkHandler', {
+
+    method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"links": links})
+    })
+})
+
+
+let submit_btn = document.querySelector('.submit_btn');
+let config = []
+let value = []
+submit_btn.addEventListener('click', () => {
+
+  let parentDiv = submit_btn.closest(".interface-group");
+    let node_elements = parentDiv.querySelectorAll('.node');
+    
+    node_elements.forEach((node_element) => {
+      //let input_value = node_element.querySelector('.input_value');
+      let input_value = node_element.querySelector('.value')
+      value.push([input_value.getAttribute("name"), input_value.value])
+      alert(input_value.value)
+
+      config.push(node_element.getAttribute("style"));
+    
+    })
+
+
+    fetch("/heart", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"config": config,
+        "value": value
+        })
+    })
+    //.then(response => console.log('Server response:', response))
+    .then(response => {if(!response.ok){
+                            throw new Error('Network response Error');}
+                       response.json(); })
+
+    .catch(error => {
+        console.error("Error:", error);
+
+    });
+    
+});
+</script>
+{% endblock %}
+
+

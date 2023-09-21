@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}
+Cell Automata
+{% endblock %}
+{% block content %}
+<div class="container md-12">
+  {% for row_cells in cell_field %}
+<div class="row md-6">
+ {% for cell in row_cells %}
+ <div class="col ">
+  <div class=""></div>
+  {{ cell | safe }}
+ </div>
+ {% endfor %}
 
-</body>
-</html>
+</div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
+
+
+

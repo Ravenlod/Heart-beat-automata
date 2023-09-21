@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}
+Cell Automata
+{% endblock %}
+{% block content %}
+<div class="container-fluid interface-group">
+
+  <div class="block node" id="block1"></div>
+  <div class="block node" id="block2"></div>
+  <svg id="line"></svg>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+function connectBlocks() {
+    const block1 = document.getElementById('block1');
+    const block2 = document.getElementById('block2');
+    const line = document.getElementById('line');
+  
+    const rect1 = block1.getBoundingClientRect();
+    const rect2 = block2.getBoundingClientRect();
+  
+    const x1 = rect1.left + rect1.width / 2;
+    const y1 = rect1.top + rect1.height / 2;
+    const x2 = rect2.left + rect2.width / 2;
+    const y2 = rect2.top + rect2.height / 2;
+  
+    line.setAttribute('width', window.innerWidth);
+    line.setAttribute('height', window.innerHeight);
+  
+    line.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
+  }
+  
+  window.addEventListener('resize', connectBlocks);
+  connectBlocks(); // Вызовите функцию при загрузке страницы
+  
+
+
+
+
+  node_set = document.querySelectorAll('.node');
+  node_set.forEach((node) => {
+    dragElement(node)
+    node.addEventListener('click', connectBlocks)
+})
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;  
+  elmnt.onmousedown = dragMouseDown;
+  
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // получаем позицию курсора мыши вначале:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // вызываем функцию каждый раз, когда курсор движется:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // вычисляем новую позицию курсора:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // задаем новую позицию элемента:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // прекращаем двигать, когда кнопка мыши отпущена:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
+
+{% endblock %}
