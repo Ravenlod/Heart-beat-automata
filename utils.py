@@ -109,9 +109,5 @@ def Heart(input):
         Neuron.neuron_network=Neuron.changes_value(Neuron.neuron_network)
         return [str(value.value) for value in Neuron.neuron_network]
 
-Heart({'links': [['1', '3'], ['1', '2'], ['2', '3'], ['3', '4'], ['3','5']]})
 # for (index, neuron) in enumerate(neuron_network):
 #         print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
-print(Heart([['1', '0'], ['2', '3'], ['3', '0'], ['4', '0'], ['5', '0']]))
-for (index, neuron) in enumerate(Neuron.neuron_network):
-        print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)

@@ -7,7 +7,7 @@ Cell Automata
 
   <div class="block node" id="block1"></div>
   <div class="block node" id="block2"></div>
-  <svg id="line"></svg>
+  
 
 </div>
 {% endblock %}
@@ -15,11 +15,23 @@ Cell Automata
 {% block scripts %}
 
 <script>
-function connectBlocks() {
-    const block1 = document.getElementById('block1');
-    const block2 = document.getElementById('block2');
-    const line = document.getElementById('line');
   
+let block = document.createElement("div");
+let body_block = document.querySelector('body');
+body_block.append(block)
+block.innerHTML = '<svg class="line"> </svg>'
+//line.setAttribute('id', 'line')
+
+connectBlocks(); // Вызовите функцию при загрузке страницы
+window.addEventListener('resize', connectBlocks);
+
+function connectBlocks() {
+    const block1 = document.querySelector('#block1');
+    const block2 = document.querySelector('#block2');
+
+    let line = document.querySelector('.line')
+
+    // document.body.insertBefore(line, block2);
     const rect1 = block1.getBoundingClientRect();
     const rect2 = block2.getBoundingClientRect();
   
@@ -34,10 +46,6 @@ function connectBlocks() {
     line.innerHTML = `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`;
   }
   
-  window.addEventListener('resize', connectBlocks);
-  connectBlocks(); // Вызовите функцию при загрузке страницы
-  
-
 
 
 
@@ -46,6 +54,7 @@ function connectBlocks() {
     dragElement(node)
     node.addEventListener('click', connectBlocks)
 })
+
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;  
   elmnt.onmousedown = dragMouseDown;
