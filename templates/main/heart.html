@@ -39,10 +39,12 @@ Heart Automata
 
     {% for node in nodes %}
         <div class="row">
-          <input class="input_value" type="text" value="{{ node[0] | safe}}" id="input_{{ loop.index | safe }}">
+          <input class="input_value" type="text" value="{{ node[0] | safe}}" id="input_{{ loop.index | safe }}" 
+                 tabindex="{{ loop.index | safe }}">
           <label for="input_{{loop.index | safe}}">Neuron {{ loop.index | safe }}</label> 
         </div>
     {% endfor %}
+
       </div>
 
     </div>
