@@ -1,5 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 import secrets
+from utils import Heart
+import json
 app = Flask(__name__)
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
@@ -22,7 +24,10 @@ def cell_automata():
 def linkHandler():
     if request.method == 'POST':
         link_input = request.json
-    print(link_input)
+    session['links'] = dict(link_input)['links']
+    print("I", link_input)
+    Heart(dict(link_input))
+
     return redirect(url_for('heart_automata'))
 
 @app.route('/heart', methods=['GET', 'POST'])
@@ -31,25 +36,34 @@ def heart_automata():
     nodes = list()
     input_list = list()
     config = "top: auto; left: auto"
-    default_list = [("0", config)] * n
-    
+    default_list = [["0", config]] * n
+
+    if "config" in session:
+        for index, output in enumerate(session.get("config", "top: auto; left: auto")):
+            nodes.append([session.get("value", "0")[index], output])
+    else:
+        for output in default_list:
+            nodes.append(output)
+
     if request.method == 'POST':
         raw_input = request.json
         input_list = raw_input['config']
-        value_list = raw_input['value']
+        input_value = raw_input['value']
+        temp_value = Heart(list(input_value))
+
         session["config"] = input_list
-        session['value'] = value_list
-        print(session.get('config'))
-        print(value_list)
-    if "config" in session:
-        for index, output in enumerate(session.get("config", "top: auto; left: auto")): 
-            nodes.append((session.get('value')[index][1], output))
-    else:
-        for output in default_list: 
-            nodes.append((output))
-    print(nodes)
+        session["value"] = temp_value
+        print("B", temp_value)
+
+        for index, value in enumerate(nodes):
+            nodes[index] = [list(temp_value)[index], value[1]]
+        redirect(url_for('heart_automata'))
+
+    print("R", nodes)
     return render_template('main/heart.html', 
-                           nodes=nodes)
+                           nodes=nodes,
+                           link_list=session.get('links', None))
+                          # node_value_list=node_value_list)
 
 @app.route('/test')
 def test_page():

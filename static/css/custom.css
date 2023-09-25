@@ -16,9 +16,15 @@
   
   width: 100%;
 }
-
+.line {
+  z-index: -1;
+  position: absolute;
+  stroke: black;
+  stroke-width: 2px;
+}
 
 .node {
+  z-index: 5;
   position: absolute;
   width: 50px;
   height: 50px;
@@ -28,13 +34,7 @@
   padding: 10px;
   z-index: 5;
 }
-.node_value {
 
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-}
 .node_block {
   text-align: center;
   width: 30px;
@@ -48,26 +48,19 @@
     background-color: red;
     
   }
-.container-custom {
 
-
-  min-height: 1080px;
-}
   #block1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    cursor: move;
+
   }
   
   #block2 {
     top: 30%;
     left: 70%;
+    cursor: move;
+
     transform: translate(-50%, -50%);
   }
-  
-  #line {
-    position: absolute;
-    stroke: black;
-    stroke-width: 2px;
-  }
-  

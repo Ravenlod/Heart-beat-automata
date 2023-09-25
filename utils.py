@@ -10,6 +10,8 @@ class Neuron:
         self.id=Neuron.id_counter
         Neuron.id_counter+=1
 
+    
+
     @staticmethod
     def changes_value(neurons):
         
@@ -32,8 +34,7 @@ class Neuron:
     @staticmethod
     def next():
         Neuron.changes_value(Neuron.neuron_network)
-        for (index, neuron) in enumerate(Neuron.neuron_network):
-            print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
+        
 
 
 input_data = {
@@ -81,7 +82,10 @@ input_data = {
 
 #{'links': [['4', '5'], ['5', '1'], ['2', '5'], ['3', '2']]}
 def Heart(input):
+
     if isinstance(input, dict):
+        if input['treshold']!=0:
+            Neuron.refrak=int(input['treshold'])
         for node in input['links']:
             for id in node:
                 if str(int(id)-1) in Neuron.input_data:
@@ -105,14 +109,9 @@ def Heart(input):
             # print(Neuron.neuron_network[int(neuron_data[0])-1])
             Neuron.neuron_network[int(neuron_data[0])-1].value = int(neuron_data[1])
             # print(Neuron.neuron_network[int(neuron_data[0])-1].value)
-        for (index, neuron) in enumerate(Neuron.neuron_network):
-            print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
+        
         Neuron.neuron_network=Neuron.changes_value(Neuron.neuron_network)
         return [str(value.value) for value in Neuron.neuron_network]
 
-Heart({'links': [['1', '3'], ['1', '2'], ['2', '3'], ['3', '4'], ['3','5']]})
 # for (index, neuron) in enumerate(neuron_network):
 #         print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
-print(Heart([['1', '0'], ['2', '3'], ['3', '0'], ['4', '0'], ['5', '0']]))
-for (index, neuron) in enumerate(Neuron.neuron_network):
-        print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
