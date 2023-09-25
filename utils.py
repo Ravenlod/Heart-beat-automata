@@ -14,8 +14,8 @@ class Neuron:
 
     @staticmethod
     def changes_value(neurons):
-        
-        for neuron in neurons:
+        last_neurons = Neuron.neuron_network.copy()
+        for index, neuron in enumerate(neurons):
             if neuron.value == Neuron.refrak and not neuron.isChange:
                 neuron.value-=1
                 neuron.isChange = True
@@ -23,9 +23,16 @@ class Neuron:
                     if(neurons[int(ids_neurons)-1].value==0):
                         neurons[int(ids_neurons)-1].value=Neuron.refrak
                         neurons[int(ids_neurons)-1].isChange=True
+                print('new', int(neuron.value))
             else:
                 if neuron.value != 0 and neuron.value!=Neuron.refrak and not neuron.isChange:
-                    neuron.value-=1
+                    print('new', int(neuron.value))
+                    if(int(last_neurons[index].value)<neuron.value):
+                        print('lasd', int(last_neurons[index].value))
+                        print('new', int(neuron.value))
+                        neuron.value=Neuron.refrak
+                    else:
+                        neuron.value-=1
             
         for neuron in neurons:
             neuron.isChange = False
