@@ -12,6 +12,7 @@ class Neuron:
 
     @staticmethod
     def changes_value(neurons):
+        
         for neuron in neurons:
             if neuron.value == Neuron.refrak and not neuron.isChange:
                 neuron.value-=1
