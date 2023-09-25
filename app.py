@@ -32,7 +32,7 @@ def linkHandler():
 
 @app.route('/heart', methods=['GET', 'POST'])
 def heart_automata():
-    n = 3
+    n = 5
     nodes = list()
     input_list = list()
     config = "top: auto; left: auto"

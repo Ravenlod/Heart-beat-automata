@@ -1,6 +1,9 @@
 //Global variables
 
 let svg_list = []
+let links = []
+
+
 temp_list = document.querySelector('.link_list_holder').innerText
 console.log(temp_list)
 
@@ -14,7 +17,6 @@ if(temp_list.trim() != "null")
 }
 
 
-let links = []
 
 
 //Global functions
@@ -34,15 +36,17 @@ svg_list.forEach((svg) =>{
 
 let link_submit_btn = document.querySelector('.link_submit_btn')
 link_submit_btn.addEventListener('click', () => {
-
+  let treshold = document.querySelector('#input_treshold').value
   fetch('/linkHandler', {
 
     method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"links": links})
+        body: JSON.stringify({"links": links,
+                              "treshold": treshold})
     })
+
 console.log('out:', links)
 
 })
@@ -225,14 +229,15 @@ submit_btn.addEventListener('click', () => {
         "value": value
         })
     })
-    //.then(response => console.log('Server response:', response))
+    
     .then(response => {if(!response.ok){
                             throw new Error('Network response Error');}
                        response.json(); })
-
+    .then(() => {location.reload()})
     .catch(error => {
         console.error("Error:", error);
 
     });
+    
     
 });
