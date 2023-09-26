@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, session
 import secrets
 from utils import Heart
 import json
+import copy
 app = Flask(__name__)
 secret_key = secrets.token_hex(16)
 app.config['SECRET_KEY'] = secret_key
@@ -32,7 +33,7 @@ def linkHandler():
 
 @app.route('/heart', methods=['GET', 'POST'])
 def heart_automata():
-    n = 5
+    n = 4
     nodes = list()
     input_list = list()
     config = "top: auto; left: auto"
@@ -40,7 +41,11 @@ def heart_automata():
 
     if "config" in session:
         for index, output in enumerate(session.get("config", "top: auto; left: auto")):
-            nodes.append([session.get("value", "0")[index], output])
+           nodes.append([session.get("value", "0")[index], output])
+        # nodes = copy.deepcopy([session.get("value", "0"), ])
+        session.pop('value')
+        session.pop('config')
+
     else:
         for output in default_list:
             nodes.append(output)
@@ -50,19 +55,19 @@ def heart_automata():
         input_list = raw_input['config']
         input_value = raw_input['value']
         temp_value = Heart(list(input_value))
-
         session["config"] = input_list
         session["value"] = temp_value
         print("B", temp_value)
-
+        print("A", input_list)
         for index, value in enumerate(nodes):
             nodes[index] = [list(temp_value)[index], value[1]]
         redirect(url_for('heart_automata'))
 
     print("R", nodes)
+    link_list = session.get('links', None)
     return render_template('main/heart.html', 
                            nodes=nodes,
-                           link_list=session.get('links', None))
+                           link_list=link_list)
                           # node_value_list=node_value_list)
 
 @app.route('/test')

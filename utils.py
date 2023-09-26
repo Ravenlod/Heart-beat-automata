@@ -1,8 +1,11 @@
+import copy
+
 class Neuron:
     id_counter=0
     refrak = 3
     neuron_network = []
     input_data = {}
+    isBegin=True
     def __init__(self, value, *neighbour):
         self.value = value
         self.neighbour = neighbour
@@ -13,26 +16,25 @@ class Neuron:
     
 
     @staticmethod
-    def changes_value(neurons):
-        last_neurons = Neuron.neuron_network.copy()
+    def changes_value(neurons, copy=None):
+        last_neurons = copy
         for index, neuron in enumerate(neurons):
-            if neuron.value == Neuron.refrak and not neuron.isChange:
-                neuron.value-=1
+            #print(neurons[index].value, ' --- ',index)
+            if(last_neurons[index].value<neuron.value):
+                neurons[index].value='*'#Neuron.refrak
+                #print('modify', neurons[index].value, ' --- ',index)
+
+        for index, neuron in enumerate(neurons):
+            if neuron.value == '*' and not neuron.isChange:
+                neuron.value=Neuron.refrak-1
                 neuron.isChange = True
                 for ids_neurons in neuron.neighbour:
                     if(neurons[int(ids_neurons)-1].value==0):
-                        neurons[int(ids_neurons)-1].value=Neuron.refrak
+                        neurons[int(ids_neurons)-1].value='*'
                         neurons[int(ids_neurons)-1].isChange=True
-                print('new', int(neuron.value))
-            else:
-                if neuron.value != 0 and neuron.value!=Neuron.refrak and not neuron.isChange:
-                    print('new', int(neuron.value))
-                    if(int(last_neurons[index].value)<neuron.value):
-                        print('lasd', int(last_neurons[index].value))
-                        print('new', int(neuron.value))
-                        neuron.value=Neuron.refrak
-                    else:
-                        neuron.value-=1
+        for index, neuron in enumerate(neurons):
+            if neuron.value != 0 and neuron.value!='*' and not neuron.isChange:
+                neuron.value-=1
             
         for neuron in neurons:
             neuron.isChange = False
@@ -45,54 +47,20 @@ class Neuron:
 
 
 input_data = {
-    # 0: {
-    #     'value':0 ,
-    #     'neighbours': [1,2]
-    # },
-    # 1: {
-    #     'value':3 ,
-    #     'neighbours': [0,2]
-    # },
-    # 2: {
-    #     'value':0 ,
-    #     'neighbours': [0,1,3,4]
-    # },
-    # 3: {
-    #     'value':0,
-    #     'neighbours': [2]
-    # },
-    # 4: {
-    #     'value':0,
-    #     'neighbours': [2]
-    # },
+
 }
 
 
-# def createNeuron():
-#     count_neuron = len(input_data)
-#     for i in range(count_neuron):
-#         isEnd = False
-#         neighbours = []
-#         neuron_value = input_data[str(i)]['value']
-#         neuron_network.append(Neuron(neuron_value, *input_data[str(i)]['neighbours']))
-
-#     for (index, neuron) in enumerate(neuron_network):
-#         print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
-
-
-# Neuron.next()
-# Neuron.next()
-# Neuron.next()
-# Neuron.next()
-# Neuron.next()
 
 
 #{'links': [['4', '5'], ['5', '1'], ['2', '5'], ['3', '2']]}
 def Heart(input):
 
     if isinstance(input, dict):
-        if input['treshold']!=0:
+        if int(input['treshold']) > 0:
             Neuron.refrak=int(input['treshold'])
+        elif int(input['treshold']) <= 0:
+            Neuron.refrak=3
         for node in input['links']:
             for id in node:
                 if str(int(id)-1) in Neuron.input_data:
@@ -112,13 +80,22 @@ def Heart(input):
             neuron_value = int(Neuron.input_data[str(i)]['value'])
             Neuron.neuron_network.append(Neuron(neuron_value, *Neuron.input_data[str(i)]['neighbours']))
     else:#[['1', '0'], ['2', '0'], ['3', '0'], ['4', '0'], ['5', '0']]
+        copy_neuron_network = []
+        if Neuron.isBegin:
+            Neuron.isBegin = False
+        else:
+            for neuron in Neuron.neuron_network:
+                copy_neuron_network.append(copy.deepcopy(neuron))
+            # copy_neuron_network=Neuron.neuron_network.deepcopy()
         for neuron_data in input:
-            # print(Neuron.neuron_network[int(neuron_data[0])-1])
-            Neuron.neuron_network[int(neuron_data[0])-1].value = int(neuron_data[1])
-            # print(Neuron.neuron_network[int(neuron_data[0])-1].value)
+            if neuron_data[1]!='*':
+                Neuron.neuron_network[int(neuron_data[0])-1].value = int(neuron_data[1])
+            else:
+                Neuron.neuron_network[int(neuron_data[0])-1].value = '*'
         
-        Neuron.neuron_network=Neuron.changes_value(Neuron.neuron_network)
+        if len(copy_neuron_network)==0:
+            for neuron in Neuron.neuron_network:
+                copy_neuron_network.append(copy.deepcopy(neuron))
+        Neuron.neuron_network=Neuron.changes_value(Neuron.neuron_network, copy_neuron_network)
         return [str(value.value) for value in Neuron.neuron_network]
 
-# for (index, neuron) in enumerate(neuron_network):
-#         print(neuron.id, ' - ', neuron.value, ' - ', neuron.neighbour)
