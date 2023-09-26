@@ -59,7 +59,7 @@ def heart_automata():
             nodes[index] = [list(temp_value)[index], value[1]]
         redirect(url_for('heart_automata'))
 
-    print("R", nodes)
+    # print("R", nodes)
     return render_template('main/heart.html', 
                            nodes=nodes,
                            link_list=session.get('links', None))
