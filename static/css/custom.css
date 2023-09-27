@@ -65,6 +65,18 @@
     transform: translate(-50%, -50%);
   }
 
+  .filling_block {
+    position: absolute;
+    z-index: 7;
+    background-color: beige;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
 .box__content{
   padding: 10px;
   background: grey; 
