@@ -64,3 +64,13 @@
 
     transform: translate(-50%, -50%);
   }
+
+.box__content{
+  padding: 10px;
+  background: grey; 
+  width: 800px; 
+  height: 500px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between;
+}
