@@ -4,6 +4,18 @@ Heart Automata
 {% endblock %}
 
 {% block content %}
+{% if not flag_is_started %}
+<div class="filling_block">
+  <div class="row">
+    <input class="input_neuron_quantity" type="text" id="input_quantity">
+    <label for="input_quantity" style="text-align: center;"> Set Neurons Quantity</label>
+  </div>
+
+  <div class="row">
+    <button type="button" class="btn btn-outline-dark start-btn">Start</button>
+  </div>
+</div>
+{% endif %}
 
 <div class="container-custom interface-group position-relative">
   <div class="container-fluid">
@@ -26,10 +38,7 @@ Heart Automata
     <div class="card col">
       
       <div class="card-body">
-        <div class="row">
-          <input class="input_neuron_quantity" type="text" id="input_quantity">
-          <label for="input_quantity">Neurons Quantity</label>
-        </div>
+        
 
         <div class="row">
           <input class="input_neuron_treshold" type="text" id="input_treshold" value="0">

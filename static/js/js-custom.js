@@ -16,9 +16,6 @@ if(temp_list.trim() != "null")
 
 }
 
-
-
-
 //Global functions
 let block = document.createElement("div");
 let body_block = document.querySelector('body');
@@ -219,13 +216,12 @@ submit_btn.addEventListener('click', () => {
 
   })
 
-
     fetch("/heart", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({"config": config,
+        body: JSON.stringify({config: config,
         "value": value
         })
     })
@@ -239,5 +235,38 @@ submit_btn.addEventListener('click', () => {
 
     });
     
-    
 });
+
+
+//Функция, срабатывающая при нажатии на кнопку '>'
+let start_btn = document.querySelector('.start-btn');
+if (start_btn) {
+  start_btn.addEventListener('click', () => {
+
+    let parentDiv = start_btn.closest(".filling_block");
+    let input_quantity = parentDiv.querySelector('.input_neuron_quantity').value
+      fetch("/heart-start", {
+          method: "POST",
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "quantity": input_quantity
+          })
+      })
+      
+      .then(response => {if(!response.ok){
+                              throw new Error('Network response Error');}
+                         response.json(); })
+      .then(() => {
+        parentDiv.parentNode.removeChild(parentDiv)
+        location.reload()})
+      .catch(error => {
+          console.error("Error:", error);
+  
+      });
+      
+  });
+}
+
+

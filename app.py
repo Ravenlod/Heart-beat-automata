@@ -31,9 +31,22 @@ def linkHandler():
 
     return redirect(url_for('heart_automata'))
 
+@app.route('/heart-start', methods=['POST'])
+def start_block():
+    if request.method == 'POST':
+        input = request.json
+    session['quantity'] = int(input['quantity'])
+
+
+    return redirect(url_for('heart_automata'))
+
 @app.route('/heart', methods=['GET', 'POST'])
 def heart_automata():
     n = 4
+    flag_is_started = False
+    if "quantity" in session:
+        n = session.get('quantity', 4)
+        flag_is_started = True
     nodes = list()
     input_list = list()
     config = "top: auto; left: auto"
@@ -67,7 +80,8 @@ def heart_automata():
     link_list = session.get('links', None)
     return render_template('main/heart.html', 
                            nodes=nodes,
-                           link_list=link_list)
+                           link_list=link_list, 
+                           flag_is_started=flag_is_started)
                           # node_value_list=node_value_list)
 
 @app.route('/test')
