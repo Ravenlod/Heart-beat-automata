@@ -1,20 +1,18 @@
 //Global variables
-
 let svg_list = []
 let links = []
 
 
 temp_list = document.querySelector('.link_list_holder').innerText
-console.log(temp_list)
+// console.log(temp_list)
 
 if(temp_list.trim() != "null")
 {
-
   svg_list = JSON.parse(temp_list)
-  console.log(svg_list)
-  console.log(typeof svg_list)
-
+  //console.log(svg_list)
+  //console.log(typeof svg_list)
 }
+
 
 //Global functions
 let block = document.createElement("div");
@@ -30,23 +28,48 @@ svg_list.forEach((svg) =>{
 })
 
 
+async function postJSON(path, data) {
+  try {
+    const response = await fetch(String(path), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    .catch(error => {
+      console.error("Error:", error);})
+
+    const result = await response.json();
+    console.log("Success:", result);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
 
 let link_submit_btn = document.querySelector('.link_submit_btn')
-link_submit_btn.addEventListener('click', () => {
+if(link_submit_btn){
+  
+  link_submit_btn.addEventListener('click', () => {
   let treshold = document.querySelector('#input_treshold').value
-  fetch('/linkHandler', {
+  data = {links: links,
+  treshold: treshold};
+  
+  postJSON('/linkHandler', data)
+  .then(()=>{
+    let parentSubmitDiv = link_submit_btn.closest('.link-submit-block')
+    parentSubmitDiv.parentNode.removeChild(parentSubmitDiv)
+  })
+  
+    
+  // console.log('out:', links)
 
-    method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"links": links,
-                              "treshold": treshold})
-    })
+  })
 
-console.log('out:', links)
-
-})
+}
 
 
 //Функция, связывающая поля input и отображение значений в нейронах
@@ -75,10 +98,10 @@ function connectLine(node_id1, node_id2){
   svg.setAttribute('height', window.innerHeight);
   temp_node1 = document.querySelector(`#node_${node_id1}`)
   temp_node2 = document.querySelector(`#node_${node_id2}`)
-  node11 = temp_node1.querySelector('.node_value')
-  node22 = temp_node2.querySelector('.node_value')
-  const rect1 = node11.getBoundingClientRect();
-  const rect2 = node22.getBoundingClientRect();
+  node1_value = temp_node1.querySelector('.node_value')
+  node2_value = temp_node2.querySelector('.node_value')
+  const rect1 = node1_value.getBoundingClientRect();
+  const rect2 = node2_value.getBoundingClientRect();
   
   const x1 = rect1.left + rect1.width / 2;
   const y1 = rect1.top + rect1.height / 2;
@@ -89,7 +112,9 @@ function connectLine(node_id1, node_id2){
 }  
   
 
-
+let input_field = document.querySelector('.input-field');
+input_field.classList.add('position-absolute')
+dragElement(input_field)
 
 
 let node_set = document.querySelectorAll('.node'); //node -> [node_header, node_card -> [node_value, node_identifier]]
@@ -116,7 +141,6 @@ node_click.addEventListener('click', () => {
       temp_index1 = node1.querySelector('.node_identifier').innerText
       temp_index2 = node.querySelector('.node_identifier').innerText
       
-
       //console.log([temp_index1, temp_index2])
       links.push([temp_index1, temp_index2])
 
@@ -128,14 +152,14 @@ node_click.addEventListener('click', () => {
 
       if(node_id1 > node_id2)
       {
-        console.log(node_id1)
+        //console.log(node_id1)
         svg_list.push([node_id2, node_id1])
         connectLine(node_id2, node_id1)
         
       }
       else if(node_id1 < node_id2)
       {
-      console.log(node_id1)
+        //console.log(node_id1)
         svg_list.push([node_id1, node_id2])
         connectLine(node_id1, node_id2)
         
@@ -216,57 +240,41 @@ submit_btn.addEventListener('click', () => {
 
   })
 
-    fetch("/heart", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({config: config,
-        "value": value
-        })
-    })
-    
-    .then(response => {if(!response.ok){
-                            throw new Error('Network response Error');}
-                       response.json(); })
-    .then(() => {location.reload()})
-    .catch(error => {
-        console.error("Error:", error);
+  let data = {
+    config: config,
+    value: value
+  };
+  postJSON("/heart", data)
 
-    });
-    
+  .then(()=>{
+    location.reload()
+  });
+  
+
 });
 
 
-//Функция, срабатывающая при нажатии на кнопку '>'
+//Функция, срабатывающая при нажатии на кнопку 'Start'
 let start_btn = document.querySelector('.start-btn');
 if (start_btn) {
   start_btn.addEventListener('click', () => {
 
     let parentDiv = start_btn.closest(".filling_block");
     let input_quantity = parentDiv.querySelector('.input_neuron_quantity').value
-      fetch("/heart-start", {
-          method: "POST",
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            "quantity": input_quantity
-          })
-      })
+
+    let data = {
+      quantity: input_quantity
+    };
+
+    postJSON("/heart-start", data)
+    .then(()=>{
+      parentDiv.parentNode.removeChild(parentDiv)
+      location.reload()
+    })
+   
+
       
-      .then(response => {if(!response.ok){
-                              throw new Error('Network response Error');}
-                         response.json(); })
-      .then(() => {
-        parentDiv.parentNode.removeChild(parentDiv)
-        location.reload()})
-      .catch(error => {
-          console.error("Error:", error);
-  
-      });
-      
-  });
+  })
 }
 
 

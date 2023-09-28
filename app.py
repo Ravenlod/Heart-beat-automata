@@ -44,9 +44,14 @@ def start_block():
 def heart_automata():
     n = 4
     flag_is_started = False
+    flag_is_submitted = False
     if "quantity" in session:
         n = session.get('quantity', 4)
         flag_is_started = True
+
+    if "links" in session:
+        flag_is_submitted = True
+
     nodes = list()
     input_list = list()
     config = "top: auto; left: auto"
@@ -81,7 +86,8 @@ def heart_automata():
     return render_template('main/heart.html', 
                            nodes=nodes,
                            link_list=link_list, 
-                           flag_is_started=flag_is_started)
+                           flag_is_started=flag_is_started,
+                           flag_is_submitted=flag_is_submitted)
                           # node_value_list=node_value_list)
 
 @app.route('/test')

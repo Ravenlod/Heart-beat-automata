@@ -4,61 +4,65 @@ Heart Automata
 {% endblock %}
 
 {% block content %}
+
 {% if not flag_is_started %}
 <div class="filling_block">
-  <div class="row">
-    <input class="input_neuron_quantity" type="text" id="input_quantity">
-    <label for="input_quantity" style="text-align: center;"> Set Neurons Quantity</label>
-  </div>
+    <div class="row">
+      <input class="input_neuron_quantity" type="text" id="input_quantity">
+      <label for="input_quantity" style="text-align: center;"> Set Neurons Quantity</label>
+    </div>
 
-  <div class="row">
-    <button type="button" class="btn btn-outline-dark start-btn">Start</button>
-  </div>
+    <div class="row">
+      <button type="button" class="btn btn-outline-dark start-btn">Start</button>
+    </div>
 </div>
 {% endif %}
 
 <div class="container-custom interface-group position-relative">
+
   <div class="container-fluid">
     <div class="col-md-6">
       <p class="lead">
-        CELL
+        Next step
       </p>
     </div>
     <div class="col-md-6">
       <button type="submit" class="btn btn-outline-dark submit_btn">></button>
     </div> 
     
-    
-  </div>
-  <hr>
-
-  <div class="position-absolute end-0" style="max-width: 20%;">
-    
-    
-    <div class="card col">
-      
-      <div class="card-body">
-        
-
-        <div class="row">
-          <input class="input_neuron_treshold" type="text" id="input_treshold" value="0">
-          <label for="input_treshold">Neuron Treshold</label>
-        </div>
-        <button type="button" class="btn btn-outline-dark link_submit_btn">Submit</button>
-
-    {% for node in nodes %}
-        <div class="row">
-          <input class="input_value" type="text" value="{{ node[0] | safe}}" id="input_{{ loop.index | safe }}" 
-                 tabindex="{{ loop.index | safe }}">
-          <label for="input_{{loop.index | safe}}">Neuron {{ loop.index | safe }}</label> 
-        </div>
-    {% endfor %}
-
+    <div class="input-field container" style="max-width: 20%; width: 300px;">
+      <div class="node_header">
+        Drag here
       </div>
-
+      
+      <div class="card col">
+        
+        <div class="card-body">
+          
+          {% if not flag_is_submitted %}
+          <div class="link-submit-block row">
+            <input class="input_neuron_treshold" type="text" id="input_treshold" value="0">
+            <label for="input_treshold">Neuron Treshold</label>
+            <button type="button" class="btn btn-outline-dark link_submit_btn">Submit</button>
+          </div>
+          <hr>
+          {% endif %}
+    
+      {% for node in nodes %}
+          <div class="row">
+            <input class="input_value" type="text" value="{{ node[0] | safe}}" id="input_{{ loop.index | safe }}" 
+                   tabindex="{{ loop.index | safe }}">
+            <label for="input_{{loop.index | safe}}">Neuron {{ loop.index | safe }}</label> 
+          </div>
+      {% endfor %}
+    
+        </div>
+    
+      </div>
+    
+      
     </div>
 
-    
   </div>
 
 
