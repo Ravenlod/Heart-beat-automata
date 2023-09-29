@@ -61,8 +61,6 @@ def heart_automata():
         for index, output in enumerate(session.get("config", "top: auto; left: auto")):
            nodes.append([session.get("value", "0")[index], output])
         # nodes = copy.deepcopy([session.get("value", "0"), ])
-        session.pop('value')
-        session.pop('config')
 
     else:
         for output in default_list:
