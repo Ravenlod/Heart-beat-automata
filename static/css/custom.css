@@ -80,9 +80,51 @@
 .box__content{
   padding: 10px;
   background: grey; 
-  width: 800px; 
-  height: 500px;
+  /* width: 800px; 
+  height: 500px; */
   display: flex; 
   flex-direction: column; 
-  justify-content: space-between;
+  width: fit-content;
+  gap: 5px;
+  margin-top: 15px;
+}
+.newRow{
+  display: flex; 
+  gap: 5px;
+}
+.newEl{
+  width: 40px; 
+  height: 40px; 
+  background: white; 
+  /* display: inline; */
+  border-radius: 5px;
+}
+.black{
+  background: black; 
+}
+.box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+}
+.box__input-input{
+  border: none;
+  outline: none;
+  background: rgb(225 225 220);
+  width: 337px;
+  padding: 10px;
+  border-radius: 4px;
+}
+.box__input-btn{
+  border: none;
+  outline: none;
+  padding: 10px;
+  border-radius: 4px;
+  background: rgb(225 225 220);
+}
+.disabled{
+  background: rgb(179, 172, 172);
+  
 }
