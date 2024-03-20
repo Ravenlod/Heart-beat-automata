@@ -3,24 +3,54 @@
 Cell Automata
 {% endblock %}
 {% block content %}
-<div class="box">
-  <div class="box__input">
-    <input class="box__input-input" placeholder="Введите количество строк и столбцов (n*n)">
-    <button class="box__input-btn">Создать таблицу</button>
+<div class="root">
+  <div class="container">
+    <div class="game_interface">
+        <form action="" id="form" method="post">
+         
+          <div class="form-floating mb-3">
+            <input type="number" autocomplete="off" required class="form-control" id="arena_n" placeholder="" value="10">
+            <label for="arena_n">Table size (n)</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="number" autocomplete="off" required class="form-control" id="arena_times" placeholder="" value="10">
+            <label for="arena_times">Number of iterations</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="number" autocomplete="off" required class="form-control" id="game_speed" placeholder="" value="1000">
+            <label for="game_speed">Game refresh time (ms)</label>
+          </div>
+          <button type="submit" id="submit_form" class="btn btn-success">Start</button>
+          <div class="template_form">
+            <h5>Template</h5>
+            <div class="template_form-content">
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+              <div id="template_square" class="template_square_middle"></div>
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+              <div id="template_square"></div>
+            </div>
+          </div>
+          <div class="game_arena">
+            <div class="container">
+              <div class="game_arena-content">
+                <h5>Arena</h5>
+                <div id="game_grid">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </form>
+    </div>
   </div>
-  <!-- <div class="box__content">
-
-  </div> -->
-  
-</div>
-<div class="template">
-  <div class="template__box box__content"></div>
 </div>
 {% endblock %}
 
-
-
 {% block scripts %}
-<script src="/static/js/cell-auto.js"></script>
-
+<script src="/static/js/cellauto-scripts.js"></script>
 {% endblock %}
