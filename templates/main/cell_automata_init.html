@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Cell Automata Init
+{% endblock %}
+
+{% block content %}
+<div class="init_block">
+  <div class="container">
+    <form action="" method="post">
+      <div class="form-floating mb-3">
+        <input type="number" autocomplete="off" required class="form-control" id="arena_number" name="arena_number" placeholder="" value="20">
+        <label for="arena_number">Размер таблицы (n)</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" autocomplete="off" required class="form-control" id="states_number" name="states_number" placeholder="" value="10">
+        <label for="states_number">Количество состояний</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="number" autocomplete="off" required class="form-control" id="teams_number" name="teams_number" placeholder="" value="5">
+        <label for="teams_number">Количество команд</label>
+      </div>
+      <div class="form-floating mb-3">
+        <select class="form-select" required autocomplete="off" name="init_method" id="init_method">
+          <option value="" selected>Выберите...</option>
+          <option value="0">По центру</option>
+          <option value="1">По краям</option>
+          <option value="2">Случайно</option>
+          <option value="3">Пустая</option>
+        </select>
+        <label for="teams_number">Способ инициализации сетки</label>
+      </div>
+      <div class="form-floating mb-3">
+        <button type="submit" class="btn btn-success">Применить</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

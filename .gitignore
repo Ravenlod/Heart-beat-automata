@@ -1,4 +1,5 @@
 /venv
+/.venv
 /__pycache__
 /.idea/.gitignore
 /.idea/flaskProject.iml

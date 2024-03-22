@@ -10,8 +10,11 @@ app.config['SECRET_KEY'] = secret_key
 
 @app.route('/')
 def main_page():
-
     return render_template('main/main.html')
+
+@app.route('/cell_automata_init')
+def cell_automata_init():
+    return render_template('main/cell_automata_init.html')
 
 @app.route('/cell_automata')
 def cell_automata():
