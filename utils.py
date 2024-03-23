@@ -1,4 +1,23 @@
 import copy
+import numpy as np
+
+class CellAutomata:
+    
+
+    def __init__(self, input_data : dict):
+        self.dimension = 2
+        self.dimension_size = input_data['size']
+        self.logic_type = input_data['logic_type']
+        
+        if self.logic_type == 1:
+            self.number_of_teams = input_data['teams']
+            self.number_of_conditions = input_data['conditions']
+            self.initial_setup = input_data['setup']
+            self.matrix = np.zeros((self.dimension_size, self.dimension_size))
+
+
+    def NextStep(self, add_pos : dict):
+        pass
 
 class Neuron:
     id_counter=0
@@ -12,8 +31,6 @@ class Neuron:
         self.isChange = False
         self.id=Neuron.id_counter
         Neuron.id_counter+=1
-
-    
 
     @staticmethod
     def changes_value(neurons, copy=None):
@@ -49,9 +66,6 @@ class Neuron:
 input_data = {
 
 }
-
-
-
 
 #{'links': [['4', '5'], ['5', '1'], ['2', '5'], ['3', '2']]}
 def Heart(input):
